@@ -27,6 +27,7 @@ function toggleIsLiked(heart, button) {
 }
 
 function setButtonText(heart, button) {
+  console.log(heart);
   if ([...heart.classList].includes('is-liked')) {
     setTimeout(
       () => (button.querySelector('.button__text').textContent = 'Unlike'),
