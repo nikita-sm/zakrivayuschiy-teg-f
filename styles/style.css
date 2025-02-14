@@ -12,18 +12,22 @@
 
 .page {
   min-inline-size: 320px;
-  min-block-size: 100dvb; /*100 от viewport по блочной оси*/
+  min-block-size: /* 100dvb */ 100vh; /*100 от viewport по блочной оси*/
   color:  #000;
   padding-top: 100px;
-  font-family:Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   position: relative;
   background: var(--card-gradient);
   background-size: cover;
+  background-attachment: fixed;
+  background-image: repeating-linear-gradient(to right, #d3d3d3 0px 2px, transparent 2px 4px),
+                    repeating-linear-gradient(#d3d3d3 0px 2px, transparent 2px 4px),
+                    linear-gradient(#e7e7e7 0 0.01%, #1a1a1a);
 }
 
 @supports (font-variation-settings: normal) {
   .page {
-    font-family: var(--text-font), sans-serif;
+    font-family: var(--text-font), Arial, Helvetica, sans-serif;
     font-variation-settings: "wght" 400;
   }
 }
@@ -35,7 +39,7 @@
   padding: 115px 14px 120px 14px;
   background: #fff;
   margin-bottom: 100px;
-  font-family: var(--title-font), sans-serif;
+  font-family: var(--title-font), Arial, Helvetica, sans-serif;
   font-weight: 400;
 }
 
@@ -50,13 +54,16 @@
   line-height: 14px;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: -0.2px;
 }
 
 .card {
   background: #fff;
   border: 2px solid #000;
-  padding-bottom: 25px;
+  padding-bottom: 23.5px;
+}
+
+.break-caption {
+  max-width: 99%;
 }
 
 .blur {
@@ -99,17 +106,10 @@
   line-height: 21.5px;
   padding: 4px 10px 6px 10px;
   mix-blend-mode: hard-light;
+  font-family: var(--text-font), Arial, Helvetica, sans-serif;
+  font-variation-settings: "wght" 700, "wdth" 400;  
 }
 
-.break {
-  display: block;
-} 
-
-@supports(font-variation-settings: "wdth" 75) {
-  .card-label {
-    font-variation-settings: "wgth" 75;
-  }
-}
 
 .card:not(:last-child) {
   margin-bottom: 51px;
@@ -118,16 +118,22 @@
 .card-img__image {
   width: 100%;
   aspect-ratio: 1/1;
+  object-fit: cover;
+  object-position: center;
+}
+
+.card-img {
+  position: relative;
 }
 
 .figure {
   margin: 0px;
-  position: relative;
+  /* position: relative; */
   overflow: hidden;
 }
 
 .figcaption {
-  font-family: var(--text-font), sans-serif;
+  font-family: var(--text-font), Arial, Helvetica, sans-serif;
   padding: 24px 26px 25px 25px;
   font-size: 18px;
   line-height: 21px;
@@ -137,19 +143,26 @@
 }
 
 .figure-text {
-  font-family: var(--title-font);
+  font-family: var(--title-font), Arial, Helvetica, sans-serif;
   position: absolute;
   top: 25px;
-  right: 13px;
+  right: 11px;
   font-size: 14px;
   line-height: 11px;
   text-shadow: -1px 0#fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
+  opacity: 50%;
+  mix-blend-mode: hard-light;
 }
 
-@supports((-webkit-text-stroke-width: 1px;) or (-webkit-text-stroke-color: #fff)) {
+.like-icon {
+  width: 37px;
+  height: 33px;
+}
+
+@supports(-webkit-text-stroke: 1px #fff)  {
   .figure-text {
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: #fff;
+    -webkit-text-stroke: 1px #fff;
+    text-shadow: none;
   }
 }
 
@@ -157,7 +170,8 @@
   display: flex;
   justify-content: end;
   align-items: stretch;
-  column-gap: 6px;
+  column-gap: 0px;
+  overflow: hidden;
 }
 
 
@@ -170,8 +184,9 @@
   border: 2px solid transparent;
   outline: none;
   transition: 0.3s ease;
-  width: 39px;
-  height: 36px
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .card__icon-button:focus {
@@ -180,39 +195,20 @@
 
 .card__icon-button:focus-visible {
   border: 2px solid black;
-  transition: 0.3s ease;
 }
 
 .card__like-button {
   display: block;
-  font-family: var(--title-font);
+  min-width: 130px;
+  font-family: var(--title-font), Arial, Helvetica, sans-serif;
   font-size: 14px;
   line-height: 12.6px;
   background-color: transparent;
   border: 2px solid #000;
-  padding: 10.5px 35px;
   margin-right: 25px;
   transition: 0.3s ease;
-  position: relative;
   overflow: hidden;
-}
-
-.card__like-button::before {
-  content: "";
-  display: block;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  background: #000;
-  transform: translateX(-100%);
-  transition: 0.5s ease-in-out;
-}
-
-.card__like-button:hover::before {
-  transform: translateX(0px);
-  transition: 0.5s ease-in-out;
+  transition: 0.3s ease;
 }
 
 .card__like-button:focus {
@@ -221,7 +217,6 @@
 
 .card__like-button:focus-visible {
   box-shadow: 2px 2px #000;
-  transition: 0.3s ease;
 }
 
 .footer {
@@ -229,32 +224,17 @@
 }
 
 .footer-button {
-  background-color: #fff;
-  padding: 66px 153px;
-  margin: 0px auto;
+  margin: 50px auto 100px auto;
+  padding: 14px 20px 11px 20px;
   border: 2px solid #000;
-  font-family: var(--title-font), sans-serif;
+  font-family: var(--title-font), Arial, Helvetica, sans-serif;
   font-size: 14px;
-  line-height: 12.6px;
-  padding-top: 13px;
   display: flex;
   flex-direction: column;
   row-gap: 10px;
   align-items: center;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
 }
 
-.footer-button * {
-  position: absolute;
-  z-index: 2;
-}
-
-.footer-button .button__text {
-  top: 50px;
-  width: 100%;
-}
 
 .footer-button:focus {
   outline: none;
@@ -265,46 +245,51 @@
   transition: all 0.3s ease;
 }
 
-.footer-button::after {
+.diskette {
+  width: 29px;
+  height: 28px;
+  color: #000;
+}
+
+/* Стилизация кнопки */
+
+.button-animation {
+  position: relative;
+  background: #fff;
+  overflow: hidden;
+}
+
+.button-animation::before {
   content: "";
   display: block;
-  height: 100%;
-  width: 100%;
   position: absolute;
-  background-color: #000;
-  z-index: 1;
-  top: 0px;
+  width: 100%;
+  height: 100%;
+  background: black;
   transform: translateX(-100%);
-  transition: 0.5s ease-in-out;
+  top: 0px;
+  left: 0px;
+  transition: all 0.3s ease;
 }
 
-.footer-button:hover::after{
-  transform: translateX(-0%);
-  transition: 0.5s ease-in-out;
-
-}
-
-.button__text {
-  color: #fff;
+.button-animation > * {
+  position: relative;
+  z-index: 1;
+  color: white;
   mix-blend-mode: difference;
 }
 
-
-.diskette {
-  width: 35px;
-  height: 37px;
-  color: #fff;
-  mix-blend-mode: difference;
-  
+.button-animation:hover::before {
+  transform: translateX(0%);
 }
+
 
 dialog {
   color: #fff;
 }
 
 dialog::backdrop {
-  background-color: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.75);
 }
 
 dialog:not([open]) {
@@ -313,10 +298,10 @@ dialog:not([open]) {
 }
 
 dialog[open] {
-  margin-top: 300px;
+  margin-top: 67%;
   color: #000;
   width: 341px;
-  font-family: var(--title-font);
+  font-family: var(--title-font), Arial, Helvetica, sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 21px;
@@ -331,19 +316,23 @@ dialog[open] .dialog-content{
   margin-bottom: 30px;
 }
 
-/* .dialog-content .diskette {
+dialog[open] .diskette {
   width: 39px;
   height: 39px;
-} */
-
-.dialog-content__text {
-  flex-basis: 73%;
 }
 
-.dialog-button {
+dialog[open] .dialog-content__text {
+  flex-basis: 73%;
+  font-family: var(--title-font), Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  
+}
+
+dialog[open] .dialog-button {
   width: 100%;
   background-color: transparent;
-  font-family: var(--title-font);
+  font-family: var(--title-font), Arial, Helvetica, sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 12.6px;
@@ -351,82 +340,88 @@ dialog[open] .dialog-content{
   padding: 12.5px 0px;
 }
 
-/*Работа с анимациями*/
 .sparks {
   opacity: 0;
 }
 
-.main-body {
-  transition: 0.3s linear;
-  fill: transparent;
-}
-
-
-.card__icon-button:hover .main-body {
-  fill: var(--contoure);
-  transition: 0.3s linear;
-  transition-delay: 0.05s;
+.contour {
+  transition: 0.1s linear;
+  transition-delay: 0s;
 }
 
 .core {
   fill: transparent;
+  transition: 0.3s linear;
   transition-delay: 0.03s;
 }
 
-.card__icon-button:hover .cover {
+.main-boy {
+  fill: transparent;
+  transition: 0.3s linear;
+  transition-delay: 0;
+}
+
+/* Переходы для Ховер-эффектов */
+
+.like-icon:hover .contour{
+  /*Здесь пустые стили*/ 
+}
+
+.like-icon:hover .core {
   fill: var(--contoure);
   transition: 0.3s linear;
 }
 
-.card__icon-button:active .core, .card__icon-button:active .main-body {
+.like-icon:hover .main-body {
+  fill: var(--contoure);
+  transition: 0.3s linear;
+  transition-delay: 0.05s;
+}
+
+/* Переходы для состояния Активации */
+
+.like-icon:active .contour{
+  /*Здесь пустые стили*/ 
+}
+
+.like-icon:active .core {
+  fill: var(--main-body);
+  transition: 0.3s linear;
+}
+
+.like-icon:active .main-body {
   fill: var(--main-body);
   transition: 0.3s linear;
   transition-delay: 0.05s;
 }
 
+/* Придобавлении класса is-like */
+.like-icon.is-liked .contour{
+  /*Здесь пустые стили*/
+  transition: 0.3s linear;
+  transition-delay: 0.06s; 
+}
+
 .like-icon.is-liked .core {
   fill: var(--main-body);
+  transition: 0.3s linear;
 }
 
 .like-icon.is-liked .main-body {
   fill: var(--main-body);
-  transition: 0.3s;
+  transition: 0.3s linear;
   transition-delay: 0.05s;
-}
-
-.like-icon.is-liked .contour {
-  fill: var(--main-body);
-  transition: 0.3s;
-  transition-delay: 0.01s;
-}
-
-@keyframes scales {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.25);
-  }
-
-}
-
-@keyframes sparks {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
 }
 
 .like-icon.is-liked .heart {
   animation: scales 0.3s ease-in 0.1s;
+  transform-origin: center;
 }
 
 .like-icon.is-liked .sparks {
   animation: sparks 0.3s ease-in 0.3s 1;
+  transform-origin: center;
 }
-
 
 @media(width >= 375px) {
    .header__title {
@@ -453,48 +448,28 @@ dialog[open] .dialog-content{
     margin-bottom: 25px;
   }
 
-  .break {
-    display: inline;
-  }
-
   .figure-text {
     top: 30px;
     right: 25px;
   }
 
   .footer-button {
-    padding: 37px 168px;
-    margin: 0px auto;
+    margin: 51px auto 103px auto;
     border: 2px solid #000;
-    font-family: var(--title-font), sans-serif;
-    font-size: 14px;
-    line-height: 12.6px;
-    padding-top: 13px;
     display: flex;
-    flex-direction: column;
-    row-gap: 10px;
+    flex-direction: row;
+    column-gap: 10px;
     align-items: center;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
+    padding: 15px 18px 15px 18px;
+  }
+
+  dialog[open] {
+    margin-top: 43%;
   }
 
   .diskette {
-    left: 17px;
-    top: 12px;
-    width: 30px;
-    height: 30px;
+    width: 21px;
+    height: 21px;
   }
 
-  .footer-button .button__text {
-    left: 12px;
-    top: 19px;
-  }
-
-}
-
-.page {
-  background-image: repeating-linear-gradient(to right, #d3d3d3 0px 2px, transparent 2px 4px),
-                    repeating-linear-gradient(#d3d3d3 0px 2px, transparent 2px 4px),
-                    linear-gradient(#e7e7e7 0 0.01%, #1a1a1a);
 }
