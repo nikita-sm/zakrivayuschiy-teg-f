@@ -130,6 +130,7 @@
 
 .figure {
   margin: 0px;
+  /* position: relative; */
   overflow: hidden;
 }
 
@@ -240,6 +241,15 @@
 }
 
 
+.footer-button:focus {
+  outline: none;
+}
+
+.footer-button:focus-visible {
+  box-shadow: 2px 2px #000;
+  transition: all 0.3s ease;
+}
+
 /*=============*/
 
 .diskette {
@@ -283,7 +293,6 @@
 
 dialog {
   color: #fff;
-  text-transform: uppercase;
 }
 
 dialog::backdrop {
@@ -328,7 +337,6 @@ dialog[open] .diskette {
 }
 
 .dialog-button {
-  text-transform: uppercase;
   width: 100%;
   padding: 12.5px 0px;
 }
